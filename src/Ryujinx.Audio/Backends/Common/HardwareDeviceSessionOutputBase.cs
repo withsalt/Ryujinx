@@ -1,6 +1,7 @@
 using Ryujinx.Audio.Common;
 using Ryujinx.Audio.Integration;
 using Ryujinx.Memory;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Ryujinx.Audio.Backends.Common
@@ -28,9 +29,14 @@ namespace Ryujinx.Audio.Backends.Common
             }
 
             byte[] data = new byte[buffer.DataSize];
-
-            MemoryManager.Read(buffer.DataPointer, data);
-
+            if (MemoryManager == null && buffer.Data?.Any() == true)
+            {
+                data = buffer.Data;
+            }
+            else
+            {
+                MemoryManager.Read(buffer.DataPointer, data);
+            }
             return data;
         }
 

@@ -13,6 +13,8 @@ namespace Ryujinx.HLE.HOS.Kernel.Threading
 
         public override void Signal()
         {
+            if (KernelContext == null)
+                return;
             KernelContext.CriticalSection.Enter();
 
             if (!_signaled)

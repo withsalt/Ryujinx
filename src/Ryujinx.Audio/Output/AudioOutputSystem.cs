@@ -183,6 +183,19 @@ namespace Ryujinx.Audio.Output
         /// <param name="bufferTag">The unique tag of this buffer.</param>
         /// <param name="userBuffer">The buffer informations.</param>
         /// <returns>A <see cref="ResultCode"/> reporting an error or a success.</returns>
+        public ResultCode AppendBuffer(AudioBuffer buffer)
+        {
+            lock (_parentLock)
+            {
+                if (_session.AppendBuffer(buffer))
+                {
+                    return ResultCode.Success;
+                }
+
+                return ResultCode.BufferRingFull;
+            }
+        }
+
         public ResultCode AppendBuffer(ulong bufferTag, ref AudioUserBuffer userBuffer)
         {
             lock (_parentLock)
